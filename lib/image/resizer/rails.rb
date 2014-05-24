@@ -8,7 +8,7 @@ module Image
     module Rails
 
       class << self
-        attr_accessor :cdn, :alias_name
+        attr_accessor :cdn, :alias_name, :js_helper_name
 
         def configure(&block)
           yield self
