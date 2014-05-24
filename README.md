@@ -1,6 +1,6 @@
 # Image::Resizer::Rails
 
-TODO: Write a gem description
+This gem includes helpers to build the appropriate URLs for images served via an [image-resizer](https://github.com/jimmynicol/image-resizer) instance.
 
 ## Installation
 
