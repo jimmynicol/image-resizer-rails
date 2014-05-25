@@ -8,13 +8,13 @@ Gem::Specification.new do |spec|
   spec.version       = Image::Resizer::Rails::VERSION
   spec.authors       = ['James Nicol']
   spec.email         = ['james.andrew.nicol@gmail.com']
-  spec.description   = %q{Helpers for use with image-resizer service}
+  spec.description   = 'Helpers for use with image-resizer service'
   spec.homepage      = 'https://github.com/jimmynicol/image-resizer-rails'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files`.split($/)
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+  spec.executables   = spec.files.grep(/^bin/) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(/^(test|spec|features)/)
   spec.require_paths = ['lib']
 
   spec.add_dependency 'railties', '>= 3.1'

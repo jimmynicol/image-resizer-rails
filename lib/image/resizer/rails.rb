@@ -8,26 +8,26 @@ module Image
     module Rails
 
       class << self
-        attr_accessor :cdn, :alias_name, :js_helper_name
+        attr_accessor :cdn, :image_tag_name, :js_helper_name
 
         def configure(&block)
           yield self
         end
 
-        def modifiers
-          @modifiers ||= {
-            w: { alias: :width },  h: { alias: :height }, s: { alias: :square },
-            c: { alias: :crop, values: %w(fit fill cut scale) },
-            g: { alias: :gravity, values: %w(c n s e w ne nw se sw) },
-            y: { alias: :top }, x: { alias: :left },
-            e: { alias: :external, values: default_sources },
-            f: { alias: :filter }
-          }
+        def reset_config
+          @cdn = nil
+          @image_tag_name = nil
+          @js_helper_name = nil
+          @modifiers = default_modifiers
         end
 
-        def add_modifier(key, alias_name, values=[])
+        def modifiers
+          @modifiers ||= default_modifiers
+        end
+
+        def add_modifier(key, image_tag_name='', values=[])
           @modifiers[key.to_sym] = {
-            alias: alias_name,
+            alias: image_tag_name,
             values: values
           }
         end
@@ -37,6 +37,17 @@ module Image
         end
 
         private
+
+        def default_modifiers
+          {
+            w: { alias: :width },  h: { alias: :height }, s: { alias: :square },
+            c: { alias: :crop, values: %w(fit fill cut scale) },
+            g: { alias: :gravity, values: %w(c n s e w ne nw se sw) },
+            y: { alias: :top }, x: { alias: :left },
+            e: { alias: :external, values: default_sources },
+            f: { alias: :filter }
+          }
+        end
 
         def default_sources
           {

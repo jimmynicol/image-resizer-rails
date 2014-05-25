@@ -2,9 +2,12 @@ require 'spec_helper'
 
 describe 'Image::Resizer::Rails' do
   let(:cdn) { 'https://my.cdn.com' }
+  subject { Image::Resizer::Rails }
 
   context '#configure' do
-    subject { Image::Resizer::Rails }\
+    before do
+      subject.reset_config
+    end
 
     it 'should have no cdn set' do
       subject.cdn.should eq nil
@@ -25,6 +28,7 @@ describe 'Image::Resizer::Rails' do
       subject.configure do |config|
         config.add_modifier 'something', 'else'
       end
+
       subject.modifiers.should include(:something)
       subject.modifiers[:something][:alias].should eq 'else'
     end
