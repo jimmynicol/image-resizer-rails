@@ -1,6 +1,7 @@
 require 'image/resizer/rails/version'
-require 'image/resizer/rails/helper'
-require 'image/resizer/rails/railtie' if defined?(Rails)
+# require 'image/resizer/rails/helper'
+require 'image/resizer/rails/engine'
+# require 'image/resizer/rails/railtie' if defined?(Rails)
 
 module Image
   module Resizer
