@@ -24,10 +24,10 @@ module Image
         end
 
         def self.included(base)
-          if img_tag_name
-            singleton_class.send(:alias_method, img_tag_name, :ir_image_tag)
-          end
           base.class_eval do
+            if ::Image::Resizer::Rails.image_tag_name
+              alias_method ::Image::Resizer::Rails.image_tag_name, :ir_image_tag
+            end
             unless method_defined?(:image_tag)
               if defined?(ActionView)
                 include ::ActionView::Helpers::AssetTagHelper
@@ -80,15 +80,19 @@ module Image
           fail NoCDNException if cdn.nil?
 
           source, modifiers = parse_arguments(args)
-          modifier_str = mod_str(modifiers)
-          path = build_path(source, modifiers)
+          uri = source ? URI(source) : nil
+          modifier_str = mod_str(uri, modifiers)
+          path = build_path(uri, modifiers)
 
           "#{cdn.gsub(/\/$/, '')}#{modifier_str}#{path}"
         end
 
-        def mod_str(modifiers)
-          return '' if modifiers.nil? || modifiers[0].nil?
-          mod_arr = build_mod_arr(modifiers)
+        def mod_str(uri, modifiers)
+          mod_arr = []
+          unless modifiers.nil? || modifiers[0].nil?
+            mod_arr = build_mod_arr(modifiers)
+          end
+          mod_arr << 'efacebook' if uri && url_domain(uri.host) == :facebook
           mod_arr.compact
           mod_arr.length > 0 ? "/#{mod_arr.join('-')}" : ''
         end
@@ -111,9 +115,8 @@ module Image
           end
         end
 
-        def build_path(source, modifiers)
-          if source
-            uri = URI source
+        def build_path(uri, modifiers)
+          if uri
             case url_domain(uri.host)
             when :s3
               s3_object uri
@@ -152,6 +155,7 @@ module Image
       end
 
       class NoCDNException < Exception; end
+      class NotS3SourceException < Exception; end
     end
   end
 end

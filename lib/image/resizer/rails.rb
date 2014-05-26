@@ -24,22 +24,29 @@ module Image
           @modifiers ||= default_modifiers
         end
 
-        def add_modifier(key, image_tag_name = '', values = [])
-          @modifiers[key.to_sym] = {
-            alias: image_tag_name,
-            values: values
-          }
+        def add_modifier(key, img_tag = '', values = [])
+          @modifiers[key.to_sym] = { alias: img_tag, values: values }
         end
 
         def add_source(name, option)
           @modifiers[:e][:values][name.to_sym] = option.to_sym
         end
 
+        def to_hash
+          {
+            cdn: cdn,
+            image_tag_name: image_tag_name,
+            js_helper_name: js_helper_name,
+            modifiers: modifiers
+          }
+        end
+
         private
 
         def default_modifiers
           {
-            w: { alias: :width },  h: { alias: :height }, s: { alias: :square },
+            w: { alias: :width },  h: { alias: :height },
+            s: { alias: :square },
             c: { alias: :crop, values: %w(fit fill cut scale) },
             g: { alias: :gravity, values: %w(c n s e w ne nw se sw) },
             y: { alias: :top }, x: { alias: :left },

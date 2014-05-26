@@ -26,6 +26,7 @@ describe 'Image::Resizer::Rails::IrHelper' do
     before do
       Image::Resizer::Rails.configure do |config|
         config.cdn = cdn
+        config.image_tag_name = 'surl'
       end
     end
 
@@ -49,9 +50,22 @@ describe 'Image::Resizer::Rails::IrHelper' do
       subject.send(:s3_object, URI(s3_inv)).should eq s3_obj
     end
 
+    it 'should detect a Facebook url and set the endpoint correctly' do
+      url = "#{cdn}/efacebook/missnine.jpg"
+      subject.ir_url(fb_url).should eq url
+    end
+
+    it 'should detect a Facebook url and set the modifiers correctly' do
+      url = "#{cdn}/s50-efacebook/missnine.jpg"
+      subject.ir_url(fb_url, s: 50).should eq url
+    end
+
+    it 'should alias methods when they are set' do
+      subject.should respond_to :surl
+    end
+
     context 'set modifier strings correctly' do
       it 'should set square correctly' do
-        # subject.send(:build_modifier_string, {s:50}).should eq 's50'
         subject.ir_url(s3, s: 50).should eq "#{cdn}/s50#{s3_obj}"
       end
       it 'should set height, width correctly' do

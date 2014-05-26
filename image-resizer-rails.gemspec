@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['James Nicol']
   spec.email         = ['james.andrew.nicol@gmail.com']
   spec.description   = 'Helpers for use with image-resizer service'
+  spec.summary       = 'View helpers and JS file'
   spec.homepage      = 'https://github.com/jimmynicol/image-resizer-rails'
   spec.license       = 'MIT'
 
