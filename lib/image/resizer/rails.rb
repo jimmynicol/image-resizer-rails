@@ -6,7 +6,6 @@ module Image
   module Resizer
     # Top-level module for the image-resizer code
     module Rails
-
       class << self
         attr_accessor :cdn, :image_tag_name, :js_helper_name
 
@@ -25,7 +24,7 @@ module Image
           @modifiers ||= default_modifiers
         end
 
-        def add_modifier(key, image_tag_name='', values=[])
+        def add_modifier(key, image_tag_name = '', values = [])
           @modifiers[key.to_sym] = {
             alias: image_tag_name,
             values: values

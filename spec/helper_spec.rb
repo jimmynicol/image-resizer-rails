@@ -52,28 +52,41 @@ describe 'Image::Resizer::Rails::IrHelper' do
     context 'set modifier strings correctly' do
       it 'should set square correctly' do
         # subject.send(:build_modifier_string, {s:50}).should eq 's50'
-        subject.ir_url(s3, s:50).should eq "#{cdn}/s50#{s3_obj}"
+        subject.ir_url(s3, s: 50).should eq "#{cdn}/s50#{s3_obj}"
       end
       it 'should set height, width correctly' do
-        subject.ir_url(s3, h:200, w:300).should eq "#{cdn}/h200-w300#{s3_obj}"
+        subject.ir_url(s3, h: 200, w: 300).should eq "#{cdn}/h200-w300#{s3_obj}"
       end
       it 'should set crop properly' do
-        subject.ir_url(s3, c:'fit').should eq "#{cdn}/cfit#{s3_obj}"
+        subject.ir_url(s3, c: 'fit').should eq "#{cdn}/cfit#{s3_obj}"
       end
       it 'should not set an invalid crop value' do
-        subject.ir_url(s3, c:'else').should_not eq "#{cdn}/celse#{s3_obj}"
+        subject.ir_url(s3, c: 'else').should_not eq "#{cdn}/celse#{s3_obj}"
       end
       it 'should set gravity properly' do
-        subject.ir_url(s3, g:'ne').should eq "#{cdn}/gne#{s3_obj}"
+        subject.ir_url(s3, g: 'ne').should eq "#{cdn}/gne#{s3_obj}"
       end
       it 'should not set an invalid gravity value' do
-        subject.ir_url(s3, g:'else').should_not eq "#{cdn}/gelse#{s3_obj}"
+        subject.ir_url(s3, g: 'else').should_not eq "#{cdn}/gelse#{s3_obj}"
       end
     end
 
     context 'set external source correctly' do
       it 'should set facebook when fb_uid present' do
-        subject.ir_url(fb_uid: 'missnine').should eq "#{cdn}/efacebook/missnine.jpg"
+        url = "#{cdn}/efacebook/missnine.jpg"
+        subject.ir_url(fb_uid: 'missnine').should eq url
+      end
+      it 'should set twitter when tw_uid present' do
+        url = "#{cdn}/etwitter/djmissnine.jpg"
+        subject.ir_url(tw_uid: 'djmissnine').should eq url
+      end
+      it 'should set youtube when tw_uid present' do
+        url = "#{cdn}/eyoutube/3KIZUuvnQFY.jpg"
+        subject.ir_url(youtube_id: '3KIZUuvnQFY').should eq url
+      end
+      it 'should set vimeo when tw_uid present' do
+        url = "#{cdn}/evimeo/69445362.jpg"
+        subject.ir_url(vimeo_id: '69445362').should eq url
       end
     end
   end
