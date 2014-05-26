@@ -3,8 +3,6 @@ Javascript helper for building `image-resizer` url endpoints
  - this file is partially built via the parent ruby process to include the
    available modifiers.
 */
-
-
 (function(root, factory) {
   'use strict';
 
@@ -33,14 +31,14 @@ Javascript helper for building `image-resizer` url endpoints
   };
 
   <% unless Image::Resizer::Rails.js_helper_name.nil? %>
-    IR.<%= Image::Resizer::Rails.js_helper_name %> = IR.irImageTag;
+  IR.<%= Image::Resizer::Rails.js_helper_name %> = IR.irImageTag;
   <% end %>
 
-  IR.modifiers = <%= Image::Resizer::Rails.modifiers %>;
+  IR.modifiers = <%= Image::Resizer::Rails.modifiers.to_json %>;
 
-  IR.CDN = <%= Image::Resizer::Rails.cdn %>;
+  IR.CDN = <%= Image::Resizer::Rails.cdn.to_json %>;
 
-  IR.VERSION = <%= Image::Server::Rails.VERSION %>;
+  IR.VERSION = <%= Image::Resizer::Rails::VERSION.to_json %>;
 
   return IR;
 }));

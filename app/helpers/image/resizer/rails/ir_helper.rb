@@ -10,7 +10,7 @@ module Image
           if respond_to?(:image_tag)
             image_tag src
           else
-            "<img src='#{src}' />"
+            "<img src='#{src}' data-something='else' />"
           end
         end
 

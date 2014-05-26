@@ -1,3 +1,4 @@
+require 'image/resizer/rails/helper'
 require 'spec_helper'
 require 'uri'
 
