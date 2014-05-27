@@ -18,7 +18,7 @@ Javascript helper for building `image-resizer` url endpoints
 
   // Finally, as a browser global.
   } else {
-    root.ImageResizer = factory(root);
+    root.<%= Image::Resizer::Rails.js_class_name %> = factory(root);
   }
 
 }(this, function(root){
@@ -26,13 +26,26 @@ Javascript helper for building `image-resizer` url endpoints
 
   function IR(){}
 
-  IR.irImageTag = function(source, modifiers){
+  IR.irImageTag = function(){
+    args = IR.parseArgs(arguments);
 
   };
 
   <% unless Image::Resizer::Rails.js_helper_name.nil? %>
   IR.<%= Image::Resizer::Rails.js_helper_name %> = IR.irImageTag;
   <% end %>
+
+  IR.parseArgs = function(args){
+    var source, modifiers;
+    source = typeof args[0] === 'string' ? args[0] : null;
+    if (source){
+      modifiers = args;
+    } else {
+      args.shift()
+      modifiers = args
+    }
+    return {source: source, modifiers: modifiers};
+  };
 
   IR.modifiers = <%= Image::Resizer::Rails.modifiers.to_json %>;
 

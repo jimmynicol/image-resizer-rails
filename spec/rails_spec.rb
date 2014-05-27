@@ -20,6 +20,13 @@ describe 'Image::Resizer::Rails' do
       subject.cdn.should eq cdn
     end
 
+    it 'should set the js_class_name' do
+      subject.configure do |config|
+        config.js_class_name = 'IRAwesome'
+      end
+      subject.js_class_name.should eq 'IRAwesome'
+    end
+
     it 'should include modifiers' do
       subject.modifiers.should include(:w, :h, :s, :c, :g, :y, :x, :e, :f)
     end
