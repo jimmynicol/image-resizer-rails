@@ -3,10 +3,10 @@ require 'spec_helper'
 require 'uri'
 
 helper_class = Class.new do
-  include Image::Resizer::Rails::IrHelper
+  include Image::Resizer::Rails::Helper
 end
 
-describe 'Image::Resizer::Rails::IrHelper' do
+describe 'Image::Resizer::Rails::Helper' do
   let(:cdn) { 'https://my.cdn.com' }
   let(:s3_obj) { '/test/image.png' }
   let(:s3) { "https://s3.amazonaws.com/sample.bucket#{s3_obj}" }

@@ -4,7 +4,7 @@ module Image
   module Resizer
     module Rails
       # Series of view helpers building url strings for image-resizer endpoints
-      module IrHelper
+      module Helper
         def ir_image_tag(*args)
           src = generate_ir_endpoint(args)
           if respond_to?(:image_tag)
@@ -25,9 +25,6 @@ module Image
 
         def self.included(base)
           base.class_eval do
-            if ::Image::Resizer::Rails.image_tag_name
-              alias_method ::Image::Resizer::Rails.image_tag_name, :ir_image_tag
-            end
             unless method_defined?(:image_tag)
               if defined?(ActionView)
                 include ::ActionView::Helpers::AssetTagHelper

@@ -1,6 +1,9 @@
 # coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+# lib = File.expand_path('../lib', __FILE__)
+# $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+
+$:.push File.expand_path("../lib", __FILE__)
+
 require 'image/resizer/rails/version'
 
 Gem::Specification.new do |spec|
@@ -26,7 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'guard'
   spec.add_development_dependency 'guard-rspec'
-  spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'awesome_print'
 
 end
