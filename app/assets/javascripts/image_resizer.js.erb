@@ -36,7 +36,25 @@ Javascript helper for building `image-resizer` url endpoints
   };
 
   function generateEndpoint(source, modifiers){
+    var uri, cdn, mods, path;
 
+    uri = source || URI(source);
+    cdn = IR.CDN.replace(/\/$/, '');
+    mods = modStr(uri, modifiers);
+    path = buildPath(uri, modifiers);
+
+    return cdn + mods + path;
+  };
+
+  function modSet(key){
+    var k, v;
+    for (k in IR.modifiers){
+      v = IR.modifiers[k];
+      if (k === key || v.alias === key){
+        return v;
+      }
+    }
+    return null;
   };
 
   function sourceOption(key){
@@ -48,6 +66,45 @@ Javascript helper for building `image-resizer` url endpoints
     return null;
   };
 
+  function modStr(uri, modifiers){
+    var modArr = [];
+    if (modifiers){
+      modArr = buildModArr(modifiers);
+    }
+    if (uri && urlDomain(uri.hostname) === 'facebook'){
+      modArr.push('efacebook');
+    }
+    return modArr.length > 0 ? '/' + modArr.join('-') : '';
+  };
+
+  function buildModArr(modifiers){
+    var modArr, k, v, mSet, src;
+
+    modArr = [];
+    for (k in IR.modifiers){
+      v = IR.modifiers[k];
+      mSet = modSet(k);
+      src = sourceOption(k);
+      if (mSet){
+        if (mSet.values){
+          if mSet.values[v]){
+            modArr.push(k + v);
+          }
+        } else {
+          modArr.push(k + v);
+        }
+      } else if (src) {
+        modArr.push('e' + src[0]);
+      }
+    }
+
+    return modArr;
+  };
+
+  function buildPath(uri, modifiers){
+
+  };
+
   function urlDomain(host){
     var domain = 'other';
     if (/s3.amazonaws.com/i.test(host)){
@@ -57,6 +114,14 @@ Javascript helper for building `image-resizer` url endpoints
       domain = 'facebook';
     }
     return domain;
+  };
+
+  function s3Object(uri){
+    if (url.hostname === 's3.amazonaws.com'){
+      return '/' + uri.pathname.split('/').slice(2).join('/');
+    } else {
+      return uri.pathname;
+    }
   };
 
   function URI(url){
