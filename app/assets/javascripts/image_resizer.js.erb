@@ -1,7 +1,7 @@
 /**
 Javascript helper for building `image-resizer` url endpoints
  - this file is partially built via the parent ruby process to include the
-   available modifiers.
+   available modifiers and custom class/method names.
 */
 (function(root, factory) {
   'use strict';
@@ -24,28 +24,71 @@ Javascript helper for building `image-resizer` url endpoints
 }(this, function(root){
   'use strict';
 
+  function parseArgs(){
+    var source, modifiers;
+    source = typeof arguments[0] === 'string' ? arguments[0] : null;
+    if (source){
+      modifiers = arguments[1];
+    } else {
+      modifiers = arguments[0];
+    }
+    return { source: source, modifiers: modifiers };
+  };
+
+  function generateEndpoint(source, modifiers){
+
+  };
+
+  function sourceOption(key){
+    for (var k in IR.modifiers.e.values)){
+      if (k === key){
+        return [k, IR.modifiers.e.values[k]];
+      }
+    }
+    return null;
+  };
+
+  function urlDomain(host){
+    var domain = 'other';
+    if (/s3.amazonaws.com/i.test(host)){
+      domain = 's3';
+    }
+    if (/facebook.com/i.test(host)){
+      domain = 'facebook';
+    }
+    return domain;
+  };
+
+  function URI(url){
+    var parser = document.createElement('a');
+    parser.href = url;
+    return parser;
+  }
+
   function IR(){}
 
   IR.irImageTag = function(){
-    args = IR.parseArgs(arguments);
+    var args = parseArgs.apply(this, arguments);
+    console.log(args);
+  };
 
+  IR.irBackground = function(){
+    var args, url;
+
+    args = parseArgs.apply(this, arguments);
+    url = generateEndpoint(args.source, args.modifiers);
+
+    return 'background-image:url(' + url + ')';
+  };
+
+  IR.irUrl = function(){
+    var args = parseArgs.apply(this, arguments);
+    return generateEndpoint(args.source, args.modifiers);
   };
 
   <% unless Image::Resizer::Rails.js_helper_name.nil? %>
   IR.<%= Image::Resizer::Rails.js_helper_name %> = IR.irImageTag;
   <% end %>
-
-  IR.parseArgs = function(args){
-    var source, modifiers;
-    source = typeof args[0] === 'string' ? args[0] : null;
-    if (source){
-      modifiers = args;
-    } else {
-      args.shift()
-      modifiers = args
-    }
-    return {source: source, modifiers: modifiers};
-  };
 
   IR.modifiers = <%= Image::Resizer::Rails.modifiers.to_json %>;
 
