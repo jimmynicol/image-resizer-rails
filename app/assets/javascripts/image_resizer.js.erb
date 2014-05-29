@@ -38,8 +38,10 @@ Javascript helper for building `image-resizer` url endpoints
   function generateEndpoint(source, modifiers){
     var uri, cdn, mods, path;
 
-    uri = source || URI(source);
-    cdn = IR.CDN.replace(/\/$/, '');
+    console.log(source, modifiers);
+
+    uri  = source ? URI(source) : null;
+    cdn  = IR.CDN.replace(/\/$/, '');
     mods = modStr(uri, modifiers);
     path = buildPath(uri, modifiers);
 
@@ -58,9 +60,10 @@ Javascript helper for building `image-resizer` url endpoints
   };
 
   function sourceOption(key){
-    for (var k in IR.modifiers.e.values)){
-      if (k === key){
-        return [k, IR.modifiers.e.values[k]];
+    var mods = IR.modifiers.e.values
+    for (var k in mods){
+      if (key === mods[k]){
+        return [k, mods[k]];
       }
     }
     return null;
@@ -81,13 +84,13 @@ Javascript helper for building `image-resizer` url endpoints
     var modArr, k, v, mSet, src;
 
     modArr = [];
-    for (k in IR.modifiers){
-      v = IR.modifiers[k];
+    for (k in modifiers){
+      v = modifiers[k];
       mSet = modSet(k);
       src = sourceOption(k);
       if (mSet){
         if (mSet.values){
-          if mSet.values[v]){
+          if (mSet.values[v]){
             modArr.push(k + v);
           }
         } else {
@@ -102,7 +105,24 @@ Javascript helper for building `image-resizer` url endpoints
   };
 
   function buildPath(uri, modifiers){
-
+    if(uri){
+      switch(urlDomain(uri.hostname)){
+        case 's3':
+          return s3Object(uri);
+          break;
+        case 'facebook':
+          return fbUid(uri);
+          break;
+        default:
+          ''
+      }
+    } else {
+      for (var k in modifiers){
+        if (sourceOption(k)){
+          return '/' + modifiers[k] + '.jpg';
+        }
+      }
+    }
   };
 
   function urlDomain(host){
@@ -117,7 +137,7 @@ Javascript helper for building `image-resizer` url endpoints
   };
 
   function s3Object(uri){
-    if (url.hostname === 's3.amazonaws.com'){
+    if (uri.hostname === 's3.amazonaws.com'){
       return '/' + uri.pathname.split('/').slice(2).join('/');
     } else {
       return uri.pathname;
@@ -128,21 +148,24 @@ Javascript helper for building `image-resizer` url endpoints
     var parser = document.createElement('a');
     parser.href = url;
     return parser;
-  }
+  };
+
+  function fbUid(uri){
+    return uri.pathname.split('/')[1];
+  };
 
   function IR(){}
 
   IR.irImageTag = function(){
-    var args = parseArgs.apply(this, arguments);
-    console.log(args);
+    var args = parseArgs.apply(this, arguments),
+        url = generateEndpoint(args.source, args.modifiers);
+
+    return '<img src="' + url + '" />';
   };
 
   IR.irBackground = function(){
-    var args, url;
-
-    args = parseArgs.apply(this, arguments);
-    url = generateEndpoint(args.source, args.modifiers);
-
+    var args = parseArgs.apply(this, arguments),
+        url = generateEndpoint(args.source, args.modifiers);
     return 'background-image:url(' + url + ')';
   };
 
