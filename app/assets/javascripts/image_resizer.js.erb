@@ -18,7 +18,7 @@ Javascript helper for building `image-resizer` url endpoints
 
   // Finally, as a browser global.
   } else {
-    root.<%= Image::Resizer::Rails.js_class_name %> = factory(root);
+    root.<%= Image::Resizer::Rails.js_class %> = factory(root);
   }
 
 }(this, function(root){
@@ -37,8 +37,6 @@ Javascript helper for building `image-resizer` url endpoints
 
   function generateEndpoint(source, modifiers){
     var uri, cdn, mods, path;
-
-    console.log(source, modifiers);
 
     uri  = source ? URI(source) : null;
     cdn  = IR.CDN.replace(/\/$/, '');
@@ -174,8 +172,14 @@ Javascript helper for building `image-resizer` url endpoints
     return generateEndpoint(args.source, args.modifiers);
   };
 
-  <% unless Image::Resizer::Rails.js_helper_name.nil? %>
-  IR.<%= Image::Resizer::Rails.js_helper_name %> = IR.irImageTag;
+  <% unless Image::Resizer::Rails.js_image_tag.nil? %>
+  IR.<%= Image::Resizer::Rails.js_image_tag %> = IR.irImageTag;
+  <% end %>
+  <% unless Image::Resizer::Rails.js_background.nil? %>
+  IR.<%= Image::Resizer::Rails.js_background %> = IR.irBackground;
+  <% end %>
+  <% unless Image::Resizer::Rails.js_url.nil? %>
+  IR.<%= Image::Resizer::Rails.js_url %> = IR.irUrl;
   <% end %>
 
   IR.modifiers = <%= Image::Resizer::Rails.modifiers.to_json %>;

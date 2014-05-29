@@ -8,8 +8,7 @@ module Image
     module Rails
       class << self
         attr_accessor :cdn
-        attr_reader :ir_image_tag, :ir_background, :ir_url, \
-                    :js_class, :js_image_tag, :js_background, :js_url
+        attr_reader :js_class, :js_image_tag, :js_background, :js_url
 
         def configure(&block)
           yield self
@@ -17,8 +16,13 @@ module Image
 
         def reset_config
           @cdn = nil
-          @image_tag_name = nil
-          @js_helper_name = nil
+          @ir_image_tag = nil
+          @ir_background = nil
+          @ir_url = nil
+          @js_class = 'ImageResizer'
+          @js_image_tag = nil
+          @js_background = nil
+          @js_url = nil
           @modifiers = default_modifiers
         end
 
@@ -34,34 +38,30 @@ module Image
           @modifiers[:e][:values][name.to_sym] = option.to_sym
         end
 
-        # def image_tag_name=(value)
-        #   @image_tag_name = value
-        #   Helper.class_eval do |base|
-        #     base.send(:alias_method, value.to_sym, :ir_image_tag)
-        #   end
-        # end
-
-        # def js_class_name
-        #   @js_class_name ||= 'ImageResizer'
-        # end
+        def js_class
+          @js_class ||= 'ImageResizer'
+        end
 
         def add_alias(type, name)
-          instance_variable_set "@#{type.to_s}", name
           Helper.class_eval do |base|
             base.send(:alias_method, name.to_sym, type.to_sym)
           end
         end
 
         def add_js_alias(type, name)
-          self[type.to_sym] = name
+          instance_variable_set "@#{type.to_s}", name
         end
-
 
         def to_hash
           {
             cdn: cdn,
-            image_tag_name: image_tag_name,
-            js_helper_name: js_helper_name,
+            ir_image_tag: ir_image_tag,
+            ir_background: ir_background,
+            ir_url: ir_url,
+            js_class: js_class,
+            js_image_tag: js_image_tag,
+            js_background: js_background,
+            js_url: js_url,
             modifiers: modifiers
           }
         end

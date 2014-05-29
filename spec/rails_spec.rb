@@ -20,11 +20,36 @@ describe 'Image::Resizer::Rails' do
       subject.cdn.should eq cdn
     end
 
-    it 'should set the js_class_name' do
+    it 'should set a default for the js_class' do
+      subject.js_class.should eq 'ImageResizer'
+    end
+
+    it 'should set the js_class' do
       subject.configure do |config|
-        config.js_class_name = 'IRAwesome'
+        config.add_js_alias :js_class, 'IRAwesome'
       end
-      subject.js_class_name.should eq 'IRAwesome'
+      subject.js_class.should eq 'IRAwesome'
+    end
+
+    it 'should set the js_image_tag' do
+      subject.configure do |config|
+        config.add_js_alias :js_image_tag, 'something_ir_tag'
+      end
+      subject.js_image_tag.should eq 'something_ir_tag'
+    end
+
+    it 'should set the js_background' do
+      subject.configure do |config|
+        config.add_js_alias :js_background, 'something_background'
+      end
+      subject.js_background.should eq 'something_background'
+    end
+
+    it 'should set the js_url' do
+      subject.configure do |config|
+        config.add_js_alias :js_url, 'something_url'
+      end
+      subject.js_url.should eq 'something_url'
     end
 
     it 'should include modifiers' do

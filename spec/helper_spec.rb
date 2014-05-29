@@ -25,9 +25,9 @@ describe 'Image::Resizer::Rails::Helper' do
 
   context 'configuration set' do
     before do
+      Image::Resizer::Rails.reset_config
       Image::Resizer::Rails.configure do |config|
         config.cdn = cdn
-        config.add_alias :ir_image_tag, :surl
       end
     end
 
@@ -61,8 +61,24 @@ describe 'Image::Resizer::Rails::Helper' do
       subject.ir_url(fb_url, s: 50).should eq url
     end
 
-    it 'should alias methods when they are set' do
+    it 'should respond to alias methods when they are set' do
+      Image::Resizer::Rails.configure do |config|
+        config.add_alias :ir_image_tag, :simagetag
+        config.add_alias :ir_background, :sbg
+        config.add_alias :ir_url, :surl
+      end
+      subject.should respond_to :simagetag
+      subject.should respond_to :sbg
       subject.should respond_to :surl
+    end
+
+    it 'should set alias methods appropriately' do
+      Image::Resizer::Rails.configure do |config|
+        config.add_alias :ir_url, :surl
+      end
+      url = "#{cdn}/s50-efacebook/missnine.jpg"
+      subject.ir_url(fb_url, s: 50).should eq url
+      subject.surl(fb_url, s: 50).should eq url
     end
 
     context 'set modifier strings correctly' do
