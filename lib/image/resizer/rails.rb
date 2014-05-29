@@ -8,6 +8,7 @@ module Image
     module Rails
       class << self
         attr_accessor :cdn, :js_helper_name
+        attr_writer :js_class_name, :image_tag_name
 
         def configure(&block)
           yield self
@@ -32,23 +33,15 @@ module Image
           @modifiers[:e][:values][name.to_sym] = option.to_sym
         end
 
-        def image_tag_name
-          @image_tag_name
-        end
-
-        def image_tag_name= (value)
+        def image_tag_name=(value)
           @image_tag_name = value
           Helper.class_eval do |base|
-            base::send(:alias_method, value.to_sym, :ir_image_tag)
+            base.send(:alias_method, value.to_sym, :ir_image_tag)
           end
         end
 
         def js_class_name
           @js_class_name ||= 'ImageResizer'
-        end
-
-        def js_class_name= (value)
-          @js_class_name = value
         end
 
         def to_hash
