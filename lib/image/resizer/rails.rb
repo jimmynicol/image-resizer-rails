@@ -7,8 +7,9 @@ module Image
     # Top-level module for the image-resizer code
     module Rails
       class << self
-        attr_accessor :cdn, :js_helper_name
-        attr_writer :js_class_name, :image_tag_name
+        attr_accessor :cdn
+        attr_reader :ir_image_tag, :ir_background, :ir_url, \
+                    :js_class, :js_image_tag, :js_background, :js_url
 
         def configure(&block)
           yield self
@@ -33,16 +34,28 @@ module Image
           @modifiers[:e][:values][name.to_sym] = option.to_sym
         end
 
-        def image_tag_name=(value)
-          @image_tag_name = value
+        # def image_tag_name=(value)
+        #   @image_tag_name = value
+        #   Helper.class_eval do |base|
+        #     base.send(:alias_method, value.to_sym, :ir_image_tag)
+        #   end
+        # end
+
+        # def js_class_name
+        #   @js_class_name ||= 'ImageResizer'
+        # end
+
+        def add_alias(type, name)
+          instance_variable_set "@#{type.to_s}", name
           Helper.class_eval do |base|
-            base.send(:alias_method, value.to_sym, :ir_image_tag)
+            base.send(:alias_method, name.to_sym, type.to_sym)
           end
         end
 
-        def js_class_name
-          @js_class_name ||= 'ImageResizer'
+        def add_js_alias(type, name)
+          self[type.to_sym] = name
         end
+
 
         def to_hash
           {

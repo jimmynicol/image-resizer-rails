@@ -27,7 +27,7 @@ describe 'Image::Resizer::Rails::Helper' do
     before do
       Image::Resizer::Rails.configure do |config|
         config.cdn = cdn
-        config.image_tag_name = 'surl'
+        config.add_alias :ir_image_tag, :surl
       end
     end
 

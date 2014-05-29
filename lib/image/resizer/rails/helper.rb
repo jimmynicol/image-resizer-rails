@@ -23,16 +23,6 @@ module Image
           generate_ir_endpoint(args)
         end
 
-        def self.included(base)
-          base.class_eval do
-            unless method_defined?(:image_tag)
-              if defined?(ActionView)
-                include ::ActionView::Helpers::AssetTagHelper
-              end
-            end
-          end
-        end
-
         private
 
         def parse_arguments(args)
