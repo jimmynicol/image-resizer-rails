@@ -95,6 +95,13 @@ The JS helper (`image_resizer.js`) is either attached as a global, or can be loa
     <div id="image-bg"></div>
     <div id="image-url"></div>
 
+## Tests
+The ruby helpers are tested with RSpec and they can be run with either:
+
+    $ guard
+    $ rspec
+
+
 ## Contributing
 
 1. Fork it
