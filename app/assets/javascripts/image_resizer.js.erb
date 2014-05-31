@@ -153,14 +153,19 @@ Javascript helper for building `image-resizer` url endpoints
     return uri.pathname.split('/')[1];
   };
 
+  function altTag(url){
+    return url.split('/').pop().split('.')[0];
+  };
+
   function IR(){}
 
   // Public methods
   IR.irImageTag = function(){
     var args = parseArgs.apply(this, arguments),
-        url = generateEndpoint(args.source, args.modifiers);
+        url = generateEndpoint(args.source, args.modifiers),
+        alt = altTag(url);
 
-    return '<img src="' + url + '" />';
+    return '<img alt="' + alt + '" src="' + url + '" />';
   };
 
   IR.irBackground = function(){
