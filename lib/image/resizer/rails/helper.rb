@@ -7,6 +7,7 @@ module Image
       module Helper
         def ir_image_tag(*args)
           src = generate_ir_endpoint(args)
+          return nil if src.nil?
           if respond_to?(:image_tag)
             image_tag src
           else
@@ -16,7 +17,7 @@ module Image
 
         def ir_background(*args)
           url = generate_ir_endpoint(args)
-          "background-image:url(#{url})"
+          url ? "background-image:url(#{url})" : nil
         end
 
         def ir_url(*args)
@@ -26,7 +27,7 @@ module Image
         private
 
         def parse_arguments(args)
-          if args[0].is_a?(String)
+          if args[0].is_a?(String) || args[0].nil?
             [args[0], args[1..-1]]
           else
             [nil, args]
@@ -71,7 +72,11 @@ module Image
           modifier_str = mod_str(uri, modifiers)
           path = build_path(uri, modifiers)
 
-          "#{cdn.gsub(/\/$/, '')}#{modifier_str}#{path}"
+          if path
+            "#{cdn.gsub(/\/$/, '')}#{modifier_str}#{path}"
+          else
+            nil
+          end
         end
 
         def mod_str(uri, modifiers)

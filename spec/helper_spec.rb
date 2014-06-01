@@ -120,6 +120,19 @@ describe 'Image::Resizer::Rails::Helper' do
         subject.ir_url(vimeo_id: '69445362').should eq url
       end
     end
+
+    context 'returning blank or nil sources' do
+      it 'should return nil if nil source provided' do
+        subject.ir_image_tag(nil, s:50).should eq nil
+        subject.ir_url(nil, s:50).should eq nil
+        subject.ir_background(nil, s:50).should eq nil
+      end
+      it 'should return nil if blank source provided' do
+        subject.ir_image_tag('', s:50).should eq nil
+        subject.ir_url('', s:50).should eq nil
+        subject.ir_background('', s:50).should eq nil
+      end
+    end
   end
 
 end
