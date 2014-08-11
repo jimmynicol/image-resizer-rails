@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe 'Image::Resizer::Rails' do
+describe 'IrHelper' do
   let(:cdn) { 'https://my.cdn.com' }
-  subject { Image::Resizer::Rails }
+  subject { IrHelper }
 
   context '#configure' do
     before do

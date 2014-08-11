@@ -3,11 +3,11 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'image/resizer/rails/version'
+require 'ir_helper/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'image-resizer-rails'
-  spec.version       = Image::Resizer::Rails::VERSION
+  spec.version       = IrHelper::VERSION
   spec.authors       = ['James Nicol']
   spec.email         = ['james.andrew.nicol@gmail.com']
   spec.description   = 'Helpers for use with image-resizer service'
@@ -29,3 +29,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'awesome_print'
 
 end
+

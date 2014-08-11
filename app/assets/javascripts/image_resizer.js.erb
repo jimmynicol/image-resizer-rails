@@ -18,7 +18,7 @@ Javascript helper for building `image-resizer` url endpoints
 
   // Finally, as a browser global.
   } else {
-    root.<%= Image::Resizer::Rails.js_class %> = factory(root);
+    root.<%= IrHelper.js_class %> = factory(root);
   }
 
 }(this, function(root){
@@ -180,21 +180,21 @@ Javascript helper for building `image-resizer` url endpoints
   };
 
   // Public constants
-  IR.modifiers = <%= Image::Resizer::Rails.modifiers.to_json %>;
+  IR.modifiers = <%= IrHelper.modifiers.to_json %>;
 
-  IR.CDN = <%= Image::Resizer::Rails.cdn.to_json %>;
+  IR.CDN = <%= IrHelper.cdn.to_json %>;
 
-  IR.VERSION = <%= Image::Resizer::Rails::VERSION.to_json %>;
+  IR.VERSION = <%= IrHelper::VERSION.to_json %>;
 
   // Alias any methods that have been listed in the config
-  <% unless Image::Resizer::Rails.js_image_tag.nil? %>
-  IR.<%= Image::Resizer::Rails.js_image_tag %> = IR.irImageTag;
+  <% unless IrHelper.js_image_tag.nil? %>
+  IR.<%= IrHelper.js_image_tag %> = IR.irImageTag;
   <% end %>
-  <% unless Image::Resizer::Rails.js_background.nil? %>
-  IR.<%= Image::Resizer::Rails.js_background %> = IR.irBackground;
+  <% unless IrHelper.js_background.nil? %>
+  IR.<%= IrHelper.js_background %> = IR.irBackground;
   <% end %>
-  <% unless Image::Resizer::Rails.js_url.nil? %>
-  IR.<%= Image::Resizer::Rails.js_url %> = IR.irUrl;
+  <% unless IrHelper.js_url.nil? %>
+  IR.<%= IrHelper.js_url %> = IR.irUrl;
   <% end %>
 
   return IR;

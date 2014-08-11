@@ -1,4 +1,4 @@
-# Image::Resizer::Rails
+# IrHelper
 
 This gem includes helpers to build the appropriate URLs for images served via an [image-resizer](https://github.com/jimmynicol/image-resizer) instance.
 
@@ -19,7 +19,7 @@ Or install it yourself as:
 ## Configuration
 Configuring this gem is done via:
 
-    Image::Resizer::Rails.configure do |config|
+    IrHelper.configure do |config|
       # add your configuration here...
     end
 
@@ -83,13 +83,13 @@ Or just return the url as needed
 
 The Javascript helper is generated from the config data as an `.erb` file on load. So all of the new modifiers or sources added will be reflected, as well as any aliases set.
 
-The JS helper (`image_resizer.js`) is either attached as a global, or can be loaded via AMD or CommonJS if you are using those techniques. It has the same helper methods as the ruby helper.  
+The JS helper (`image_resizer.js`) is either attached as a global, or can be loaded via AMD or CommonJS if you are using those techniques. It has the same helper methods as the ruby helper.
 
     <script>
       var imgUrl = 'https://s3.amazonaws.com/sample.bucket/path/to/image.jpg';
-      $('#image-tag').append(ImageResizer.irImageTag(imgUrl, {s:200}));
-      $('#image-bg').attr('style', ImageResizer.irBackground(imgUrl, {s:200}));
-      $('#image-url').text(ImageResizer.irImageTag(imgUrl, {s:200}));
+      $('#image-tag').append(IR.irImageTag(imgUrl, {s:200}));
+      $('#image-bg').attr('style', IR.irBackground(imgUrl, {s:200}));
+      $('#image-url').text(IR.irImageTag(imgUrl, {s:200}));
     </script>
     <div id="image-tag"></div>
     <div id="image-bg"></div>

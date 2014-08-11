@@ -1,12 +1,12 @@
-require 'image/resizer/rails/helper'
+require 'ir_helper/helper'
 require 'spec_helper'
 require 'uri'
 
 helper_class = Class.new do
-  include Image::Resizer::Rails::Helper
+  include IrHelper::Helper
 end
 
-describe 'Image::Resizer::Rails::Helper' do
+describe 'IrHelper::Helper' do
   let(:cdn) { 'https://my.cdn.com' }
   let(:s3_obj) { '/test/image.png' }
   let(:s3) { "https://s3.amazonaws.com/sample.bucket#{s3_obj}" }
@@ -18,15 +18,15 @@ describe 'Image::Resizer::Rails::Helper' do
   context 'no configuration set' do
     it 'should throw an exception if no CDN specified' do
       expect { subject.ir_image_tag s3, s: 50 }.to raise_exception(
-        Image::Resizer::Rails::NoCDNException
+        IrHelper::NoCDNException
       )
     end
   end
 
   context 'configuration set' do
     before do
-      Image::Resizer::Rails.reset_config
-      Image::Resizer::Rails.configure do |config|
+      IrHelper.reset_config
+      IrHelper.configure do |config|
         config.cdn = cdn
       end
     end
@@ -62,7 +62,7 @@ describe 'Image::Resizer::Rails::Helper' do
     end
 
     it 'should respond to alias methods when they are set' do
-      Image::Resizer::Rails.configure do |config|
+      IrHelper.configure do |config|
         config.add_alias :ir_image_tag, :simagetag
         config.add_alias :ir_background, :sbg
         config.add_alias :ir_url, :surl
@@ -73,7 +73,7 @@ describe 'Image::Resizer::Rails::Helper' do
     end
 
     it 'should set alias methods appropriately' do
-      Image::Resizer::Rails.configure do |config|
+      IrHelper.configure do |config|
         config.add_alias :ir_url, :surl
       end
       url = "#{cdn}/s50-efacebook/missnine.jpg"

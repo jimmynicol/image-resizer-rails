@@ -1,2 +1,2 @@
 require 'awesome_print'
-require 'image/resizer/rails'
+require 'ir_helper'
